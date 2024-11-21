@@ -1,0 +1,45 @@
+import './style.scss'
+
+const appElement = document.querySelector<HTMLDivElement>('#canvas-container')!
+
+const resScale = 5;
+
+function draw_strokes(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, pageXML: Element) {
+  ctx.fillStyle = "rgb(0 0 255)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgb(255 255 255)";
+  ctx.fillRect(5, 5, canvas.width - 10, canvas.height - 10);
+  for (const stroke of pageXML.getElementsByTagName("stroke")) {
+    const points = stroke.textContent?.split(" ").map(el => parseFloat(el) * resScale)!
+    ctx.beginPath();
+    ctx.moveTo(points[0], points[1])
+    ctx.lineWidth = parseFloat(stroke.getAttribute("width")!) * resScale;
+    ctx.strokeStyle = stroke.getAttribute("color")!;
+    for (let i = 2; i < points.length; i+=2) {
+      ctx.lineTo(points[i], points[i+1])
+    }
+    ctx.stroke()
+  }
+}
+
+async function load_and_render() {
+
+  const xmlResult = await (await fetch('./xopp-example-unzip.xml')).text();
+
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlResult, 'text/xml');
+
+  const pages = xmlDoc.getElementsByTagName("page")
+
+  for (const page of pages) {
+    const canvas = document.createElement("canvas");
+    appElement.appendChild(canvas);
+    canvas.width = resScale * parseInt(page.getAttribute("width")!);
+    canvas.height = resScale * parseInt(page.getAttribute("height")!);
+    const ctx = canvas.getContext("2d");  
+    draw_strokes(ctx!, canvas, page);
+  }
+}
+
+
+load_and_render();
