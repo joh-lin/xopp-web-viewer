@@ -9,6 +9,22 @@ const fileDropZone = <HTMLInputElement>document.getElementsByClassName("file-dro
 
 xoppViewer.style.display = "none";
 
+if ("launchQueue" in window) {
+    let launchQueue: any = window.launchQueue
+    launchQueue.setConsumer(async (launchParams: any) => {
+        if (launchParams.files && launchParams.files.length == 1) {
+            const selectedFile: FileSystemFileHandle = launchParams.files[0];
+            console.log(selectedFile);
+            selectedFile.getFile().then((file: File) => {
+                load_file(file).then((xmlDoc) => {
+                    open_file(xmlDoc)
+                });
+            })
+            
+        }
+    });
+  }
+
 fileDropZone.addEventListener("change", (_) => {
     if (fileDropZone.files && fileDropZone.files.length == 1) {
         const selectedFile = fileDropZone.files[0];
