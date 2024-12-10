@@ -9,7 +9,7 @@ const fileDropZone = <HTMLInputElement>document.getElementsByClassName("file-dro
 
 xoppViewer.style.display = "none";
 
-if ("launchQueue" in window) {
+/*if ("launchQueue" in window) {
     let launchQueue: any = window.launchQueue
     launchQueue.setConsumer(async (launchParams: any) => {
         if (launchParams.files && launchParams.files.length == 1) {
@@ -23,7 +23,7 @@ if ("launchQueue" in window) {
             
         }
     });
-  }
+  }*/
 
 fileDropZone.addEventListener("change", (_) => {
     if (fileDropZone.files && fileDropZone.files.length == 1) {

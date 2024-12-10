@@ -17,14 +17,6 @@
     "display": "standalone",
     "theme_color": "#000000",
     "background_color": "#ffffff",
-    "prefer_related_applications": false,
-    "file_handlers": [
-    {
-      "action": "/",
-      "accept": {
-        "application/unknown": [".xopp"]
-      }
-    }
-  ]
+    "prefer_related_applications": false
   }
   
