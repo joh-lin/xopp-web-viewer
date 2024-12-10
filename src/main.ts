@@ -57,7 +57,7 @@ function load_pages(xmlDoc: Document) {
         newPage.className = "page";
         newPage.style.width = "calc(var(--scale-factor) * " + pageWidth + "px)";
         newPage.style.height = "calc(var(--scale-factor) * " + pageHeight + "px)";
-        pageRoot?.appendChild(newPage);
+        pageRoot?.insertBefore(newPage, pageRoot?.lastElementChild);
         newPage.appendChild(newCanvas)
         render_to_canvas(newCanvas, page);
     }
