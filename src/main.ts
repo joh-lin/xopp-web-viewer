@@ -55,8 +55,8 @@ function load_pages(xmlDoc: Document) {
         newCanvas.height = pageHeight * defaultRes;
         const newPage = document.createElement("div");
         newPage.className = "page";
-        newPage.style.width = "90vw";
-        newPage.style.height = pageHeight/pageWidth*90 + "vw";
+        newPage.style.width = "calc(var(--scale-factor) * " + pageWidth + "px)";
+        newPage.style.height = "calc(var(--scale-factor) * " + pageHeight + "px)";
         pageRoot?.appendChild(newPage);
         newPage.appendChild(newCanvas)
         render_to_canvas(newCanvas, page);

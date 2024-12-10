@@ -104,4 +104,15 @@
 <stroke tool="pen" color="#000000ff" width="0.85" capStyle="round">520.98136 781.25287 521.41527 781.7318 521.84917 782.34757 522.05471 782.68967 522.30591 783.10018 522.53428 783.5335 522.71698 784.08086 522.80833 784.5826 522.92251 785.17556 523.0367 785.76853 523.10521 786.3843 523.15088 787.00007 523.17372 787.59304 523.15088 788.18601 523.05954 788.75617 522.89968 789.30352 522.67131 789.78245 522.4201 790.19297 521.34676 791.53854 520.91285 792.0859 520.47895 792.56483 520.09072 792.99815 519.771 793.40867 519.47412 793.81918 519.26859 794.13847 519.08589 794.43495 518.90319 794.68582</stroke>
 </layer>
 </page>
+</page>
+<page width="595.28" height="841.89">
+<background type="solid" color="#ffffffff" style="graph"/>
+<layer>
+<text font="Cascadia Mono Semi-Light" size="50" x="100.70251" y="61.47556" color="#ff0000ff">Size 50 _</text>
+<stroke tool="pen" color="#ff00ffff" width="0.85" capStyle="round">112.14597 110.42945 354.24292 110.42945</stroke>
+<text font="Cascadia Mono Semi-Light" size="100" x="102.9912" y="121.7346" color="#ff0000ff">_ 100</text>
+<stroke tool="pen" color="#ff00ffff" width="0.85" capStyle="round">108.14076 217.42587 315.85229 217.42587</stroke>
+<stroke tool="pen" color="#3333ccff" width="0.85" capStyle="round">102.9912 144.75985 415.39836 144.75985</stroke>
+</layer>
+</page>
 </xournal>

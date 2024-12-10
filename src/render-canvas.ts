@@ -4,8 +4,6 @@ interface PageRenderContext {
   ctx: CanvasRenderingContext2D;
   pageWidth: number;
   pageHeight: number;
-  scaleFactorX: number;
-  scaleFactorY: number;
   scaleFactor: number;
 }
 
@@ -24,8 +22,6 @@ export function render_to_canvas(canvas: HTMLCanvasElement, pageXML: Element): v
     ctx,
     pageWidth,
     pageHeight,
-    scaleFactorX,
-    scaleFactorY,
     scaleFactor,
   };
 
@@ -35,15 +31,15 @@ export function render_to_canvas(canvas: HTMLCanvasElement, pageXML: Element): v
 
 function create_background_pattern(pageRC: PageRenderContext, style: string | null, color: string): CanvasPattern {
   const bgCanvas = document.createElement("canvas");
-  bgCanvas.width = pageRC.scaleFactorX * 14.3;
-  bgCanvas.height = pageRC.scaleFactorY * 14.3;
+  bgCanvas.width = pageRC.scaleFactor * 14.3;
+  bgCanvas.height = pageRC.scaleFactor * 14.3;
   const ctx = bgCanvas.getContext("2d")!;
   ctx.fillStyle = color;
   ctx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
 
   if (style === "graph") {
-    ctx.strokeStyle = "#000";
-    ctx.lineWidth = pageRC.scaleFactor * 0.4;
+    ctx.strokeStyle = "#bdbdbd";
+    ctx.lineWidth = pageRC.scaleFactor * 1;
     ctx.beginPath();
     ctx.moveTo(0, bgCanvas.height);
     ctx.lineTo(bgCanvas.width, bgCanvas.height);
@@ -85,7 +81,7 @@ function render_stroke(pageRC: PageRenderContext, strokeElem: Element) {
   const ctx = pageRC.ctx;
   const points = strokeElem.textContent?.split(" ").map(el => parseFloat(el))!
   ctx.beginPath();
-  ctx.moveTo(points[0] * pageRC.scaleFactorX, points[1] * pageRC.scaleFactorY)
+  ctx.moveTo(points[0] * pageRC.scaleFactor, points[1] * pageRC.scaleFactor)
   ctx.lineWidth = parseFloat(strokeElem.getAttribute("width")!) * pageRC.scaleFactor;
   ctx.strokeStyle = strokeElem.getAttribute("color")!;
   ctx.lineJoin = "round";
@@ -98,36 +94,63 @@ function render_stroke(pageRC: PageRenderContext, strokeElem: Element) {
   }
   switch (strokeElem.getAttribute("style")) {
     case "dash":
-      ctx.setLineDash([30, 30]);
+      ctx.setLineDash([25, 20]);
       break;
     case "dot":
-      ctx.setLineDash([1, 30])
+      ctx.setLineDash([1, 15])
       break;
     case "dashdot":
-      ctx.setLineDash([1, 25, 25, 25])
+      ctx.setLineDash([25, 18, 1, 18])
       break;
     default:
       ctx.setLineDash([]);
       break;
   }
   for (let i = 2; i < points.length; i += 2) {
-    ctx.lineTo(points[i] * pageRC.scaleFactorX, points[i + 1] * pageRC.scaleFactorY)
+    ctx.lineTo(points[i] * pageRC.scaleFactor, points[i + 1] * pageRC.scaleFactor)
   }
   ctx.stroke()
 }
 
+interface FontInfo {
+  fontFamily: string,
+  fontModifiers: string[]
+}
+
+function determine_font_info(fontString: string): FontInfo {
+  const fontModifierLabels = [
+    "Bold", "SemiBold", "Italic", "SemiItalic", "Demi",
+    "Regular", "Light", "SemiLight", "ExtraLight", "Medium", "Book",
+    "Condensed", "Narrow", "SemiCondensed", "Oblique",
+    "Black", "Expanded", "Cond", "Heavy", "Semi-Light",
+    "Compressed"
+  ]
+  const namePieces = fontString.split(" ");
+  const fontModifiers: string[] = []
+  let fontFamily = "";
+  for (let i = namePieces.length - 1; i >= 0; i--) {
+    if (fontModifierLabels.includes(namePieces[i])) {
+      fontModifiers.push(namePieces[i]);
+    } else {
+      fontFamily = namePieces[i] + " " + fontFamily;
+    }
+  }
+
+  return {fontFamily, fontModifiers};
+}
 
 function render_text(pageRC: PageRenderContext, textElem: Element) {
   const ctx = pageRC.ctx;
+  const fontInfo = determine_font_info(textElem.getAttribute("font")!);
   const fontSize = parseFloat(textElem.getAttribute("size")!);
+  const yOffset = fontSize/1.5;
   const x = parseFloat(textElem.getAttribute("x")!);
   const y = parseFloat(textElem.getAttribute("y")!);
-  const fontFamily = textElem.getAttribute("font");
-  ctx.font = fontSize * pageRC.scaleFactor + "px/0 " + fontFamily;
+  ctx.font = fontSize * pageRC.scaleFactor + "px/0 " + fontInfo.fontFamily;
   ctx.fillStyle = textElem.getAttribute("color")!;
-  ctx.textBaseline = "top";
+  ctx.textBaseline = "middle";
   const textSnippets = textElem.textContent?.split("\n") || []
   for (let i = 0; i < textSnippets?.length; i++) {
-    ctx.fillText(textSnippets[i], x * pageRC.scaleFactorX, (y + i * fontSize) * pageRC.scaleFactorY);
+    ctx.fillText(textSnippets[i], x * pageRC.scaleFactor, (y + yOffset + i * fontSize) * pageRC.scaleFactor);
   }
 }
