@@ -26,6 +26,30 @@ div.file-loader {
     position: relative;
     width: 100%;
     height: 100%;
+    cursor: pointer;
+  }
+
+  div {
+    position: absolute;
+    --this-padding: 30px;
+    --bg-stripe-color: rgb(200, 83, 0);
+    top: var(--this-padding);
+    bottom: var(--this-padding);
+    left: var(--this-padding);
+    right: var(--this-padding);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-stripe-color);
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, var(--bg-stripe-color) 20px, var(--bg-stripe-color) 22px);
+
+    span {
+      font-size: 2rem;
+      background-color: rgb(255, 255, 255);
+      border-radius: 5px;
+      padding: 0rem 0.3rem;
+      
+    }
   }
 }
 
